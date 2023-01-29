@@ -13,9 +13,11 @@ int main(int ac, char * av[]) {
 
     if (on) {
         // Turn DPMS off
+        std::cout << "DPMS is on, turning it off" << std::endl;
         DPMSDisable(dpy);
     } else {
         // Turn DPMS on
+        std::cout << "DPMS is off, turning it on" << std::endl;
         DPMSEnable(dpy);
     }
 
