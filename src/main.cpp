@@ -31,15 +31,18 @@ int main(int ac, char * av[]) {
         break;
     case DPMSModeStandby:
         std::cout << "DPMSModeStandby" << std::endl;
+        DPMSSetTimeouts(dpy, 600, 600, 600);
         DPMSForceLevel(dpy, DPMSModeOn);
         break;
     case DPMSModeSuspend:
         std::cout << "DPMSModeSuspend" << std::endl;
+        DPMSSetTimeouts(dpy, 600, 600, 600);
         DPMSForceLevel(dpy, DPMSModeOn);
         break;
     case DPMSModeOff:
         std::cout << "DPMSModeOff" << std::endl;
         DPMSForceLevel(dpy, DPMSModeOn);
+        DPMSSetTimeouts(dpy, 600, 600, 600);
         break;
     }
     usleep(100000);
