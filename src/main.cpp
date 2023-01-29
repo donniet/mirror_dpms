@@ -1,6 +1,9 @@
 #include <iostream>
+#include <stdlib.h>
+#include <stdarg.h>
 #include <X11/Xlib.h>
 #include <X11/extensions/dpms.h>
+#include <unistd.h>
 
 int main(int ac, char * av[]) {
     // Open a connection to the X server
@@ -11,15 +14,35 @@ int main(int ac, char * av[]) {
     CARD16 state;
     DPMSInfo(dpy, &state, &on);
 
-    if (on) {
-        // Turn DPMS off
-        std::cout << "DPMS is on, turning it off" << std::endl;
-        DPMSDisable(dpy);
-    } else {
-        // Turn DPMS on
-        std::cout << "DPMS is off, turning it on" << std::endl;
+    std::cout << "state: " << state << std::endl;
+    std::cout << "on: " << on << std::endl;
+
+    if(!on) {
         DPMSEnable(dpy);
+        usleep(100000);
     }
+
+
+    switch(state) {
+    case DPMSModeOn:
+        std::cout << "DPMSModeOn" << std::endl;
+        DPMSForceLevel(dpy, DPMSModeOff);
+        break;
+    case DPMSModeStandby:
+        std::cout << "DPMSModeStandby" << std::endl;
+        DPMSForceLevel(dpy, DPMSModeOn);
+        break;
+    case DPMSModeSuspend:
+        std::cout << "DPMSModeSuspend" << std::endl;
+        DPMSForceLevel(dpy, DPMSModeOn);
+        break;
+    case DPMSModeOff:
+        std::cout << "DPMSModeOff" << std::endl;
+        DPMSForceLevel(dpy, DPMSModeOn);
+        break;
+    }
+    usleep(100000);
+
 
     // Close the connection to the X server
     XCloseDisplay(dpy);
