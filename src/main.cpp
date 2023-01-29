@@ -9,6 +9,16 @@ int main(int ac, char * av[]) {
     // Open a connection to the X server
     Display* dpy = XOpenDisplay(nullptr);
 
+    int major, minor;
+    Bool dpms_supported = DPMSQueryExtension(dpy, &major, &minor);
+    if (!dpms_supported) {
+        // DPMS not supported
+        std::cerr << "DPMS not supported" << std::endl;
+        XCloseDisplay(dpy);
+        return -1;
+    }
+
+
     // Get the current DPMS state
     BOOL on;
     CARD16 state;
@@ -26,7 +36,7 @@ int main(int ac, char * av[]) {
     switch(state) {
     case DPMSModeOn:
         std::cout << "DPMSModeOn" << std::endl;
-        DPMSSetTimeouts(dpy, 1, 1, 1);
+        DPMSSetTimeouts(dpy, 0, 0, 0);
         DPMSForceLevel(dpy, DPMSModeStandby);
         break;
     case DPMSModeStandby:
@@ -46,7 +56,6 @@ int main(int ac, char * av[]) {
         break;
     }
     usleep(100000);
-
 
     // Close the connection to the X server
     XCloseDisplay(dpy);
