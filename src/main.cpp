@@ -26,9 +26,8 @@ int main(int ac, char * av[]) {
     switch(state) {
     case DPMSModeOn:
         std::cout << "DPMSModeOn" << std::endl;
+        DPMSSetTimeouts(dpy, 1, 1, 1);
         DPMSForceLevel(dpy, DPMSModeStandby);
-        usleep(100000);
-        DPMSDisable(dpy);
         break;
     case DPMSModeStandby:
         std::cout << "DPMSModeStandby" << std::endl;
