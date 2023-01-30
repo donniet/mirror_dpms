@@ -14,7 +14,7 @@ pkg_check_modules(DBUS REQUIRED dbus-1)
 add_executable(mirror_dpms src/main.cpp)
 
 target_include_directories(mirror_dpms PRIVATE ${Boost_INCLUDE_DIR} ${DBUS_INCLUDE_DIRS})
-target_link_libraries(mirror_dpms X11 Xext ${Boost_LIBRARIES} ${DBUS_LIBRARIES} )
+target_link_libraries(mirror_dpms X11 Xext dl ${Boost_LIBRARIES} ${DBUS_LIBRARIES} )
 
 target_compile_features(mirror_dpms PRIVATE cxx_std_20)
 target_compile_definitions(mirror_dpms PRIVATE DEBUG)
